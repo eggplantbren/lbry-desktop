@@ -8,7 +8,7 @@ type Props = {
 function ImageViewer(props: Props) {
   const { source } = props;
   return (
-    <div className="file-render__viewer">
+    <div className="file-viewer">
       <img src={source} />
     </div>
   );
