@@ -78,7 +78,7 @@ type Props = {
   hideBalance: boolean,
   confirmForgetPassword: ({}) => void,
   floatingPlayer: boolean,
-  // showReposts: boolean,
+  showReposts: boolean,
   clearPlayingUri: () => void,
   darkModeTimes: DarkModeTimes,
   setDarkTime: (string, {}) => void,
@@ -240,7 +240,7 @@ class SettingsPage extends React.PureComponent<Props, State> {
       hideBalance,
       userBlockedChannelsCount,
       floatingPlayer,
-      // showReposts,
+      showReposts,
       clearPlayingUri,
       darkModeTimes,
       clearCache,
@@ -434,7 +434,7 @@ class SettingsPage extends React.PureComponent<Props, State> {
                   />
 
                   {/* https://github.com/lbryio/lbry-desktop/issues/3774 */}
-                  {/* <FormField
+                  <FormField
                     type="checkbox"
                     name="show_reposts"
                     onChange={() => {
@@ -443,7 +443,7 @@ class SettingsPage extends React.PureComponent<Props, State> {
                     checked={showReposts}
                     label={__('Show reposts')}
                     helper={__('Show reposts from the creators you follow.')}
-                  /> */}
+                  />
 
                   {/* <FormField
                     type="checkbox"

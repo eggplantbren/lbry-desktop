@@ -30,7 +30,7 @@ function ClaimTilesDiscover(props: Props) {
     doClaimSearch,
     claimSearchByQuery,
     showNsfw,
-    // showReposts,
+    showReposts,
     hiddenUris,
     // Below are options to pass that are forwarded to claim_search
     tags,
@@ -77,13 +77,13 @@ function ClaimTilesDiscover(props: Props) {
   }
 
   // https://github.com/lbryio/lbry-desktop/issues/3774
-  // if (!showReposts) {
-  //   if (Array.isArray(options.claim_type)) {
-  //     options.claim_type = options.claim_type.filter(claimType => claimType !== 'repost');
-  //   } else {
-  //     options.claim_type = ['stream', 'channel'];
-  //   }
-  // }
+  if (!showReposts) {
+    if (Array.isArray(options.claim_type)) {
+      options.claim_type = options.claim_type.filter(claimType => claimType !== 'repost');
+    } else {
+      options.claim_type = ['stream', 'channel'];
+    }
+  }
 
   if (claimType) {
     options.claim_type = claimType;
