@@ -4,6 +4,7 @@ import analytics from 'analytics';
 import SUPPORTED_LANGUAGES from 'constants/supported_languages';
 import { launcher } from 'util/autoLaunch';
 import { makeSelectClientSetting } from 'redux/selectors/settings';
+import { Lbryio } from 'lbryinc';
 
 export const IS_MAC = process.platform === 'darwin';
 const UPDATE_IS_NIGHT_INTERVAL = 5 * 60 * 1000;
@@ -117,7 +118,25 @@ export function doSaveCustomWalletServers(servers) {
 }
 
 export function doSetClientSetting(key, value) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const {
+      settings: { daemonSettings },
+    } = getState();
+    const { share_usage_data: shareSetting } = daemonSettings;
+    const isSharingData = shareSetting || IS_WEB;
+
+    if (key === SETTINGS.SHOW_REPOSTS && isSharingData) {
+      if (value) {
+        Lbryio.call('user_tag', 'edit', {
+          remove: 'noreposts',
+        });
+      } else {
+        Lbryio.call('user_tag', 'edit', {
+          add: 'noreposts',
+        });
+      }
+    }
+
     dispatch({
       type: ACTIONS.CLIENT_SETTING_CHANGED,
       data: {
