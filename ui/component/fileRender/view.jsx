@@ -116,6 +116,7 @@ class FileRender extends React.PureComponent<Props, State> {
 
   render() {
     const { embedded, renderMode } = this.props;
+    console.log('render FileRender');
 
     return (
       <div

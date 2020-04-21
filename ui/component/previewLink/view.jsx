@@ -2,7 +2,7 @@
 import * as React from 'react';
 import UriIndicator from 'component/uriIndicator';
 import TruncatedText from 'component/common/truncated-text';
-import MarkdownPreview from 'component/common/markdown-preview';
+import MarkdownPreview from 'component/markdownPreview';
 import { withRouter } from 'react-router-dom';
 import { formatLbryUrlForWeb } from 'util/url';
 

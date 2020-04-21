@@ -1,6 +1,6 @@
 // @flow
 import React, { Fragment } from 'react';
-import MarkdownPreview from 'component/common/markdown-preview';
+import MarkdownPreview from 'component/markdownPreview';
 import ClaimTags from 'component/claimTags';
 import CreditAmount from 'component/common/credit-amount';
 import Button from 'component/button';

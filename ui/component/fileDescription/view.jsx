@@ -1,6 +1,6 @@
 // @flow
 import React, { Fragment, PureComponent } from 'react';
-import MarkdownPreview from 'component/common/markdown-preview';
+import MarkdownPreview from 'component/markdownPreview';
 import ClaimTags from 'component/claimTags';
 import Card from 'component/common/card';
 

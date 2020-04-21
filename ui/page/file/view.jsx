@@ -78,6 +78,9 @@ class FilePage extends React.Component<Props> {
   }
 
   renderFilePageLayout(uri: string, mode: string, cost: ?number) {
+    console.log('uri', uri);
+    console.log('mode', mode);
+
     if (RENDER_MODES.FLOATING_MODES.includes(mode)) {
       return (
         <React.Fragment>

@@ -58,13 +58,13 @@
     }
   }
 
-  p,
   blockquote,
   dl,
   ul,
   ol,
   pre,
-  table {
+  table,
+  div ~ div:not([class]) {
     margin-top: var(--spacing-medium);
   }
 
@@ -188,6 +188,10 @@
 
   .preview-link__description {
     margin-top: var(--spacing-small);
+  }
+
+  .content-embedded {
+    height: 300px;
   }
 }
 

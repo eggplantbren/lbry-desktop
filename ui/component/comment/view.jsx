@@ -4,7 +4,7 @@ import { isEmpty } from 'util/object';
 import relativeDate from 'tiny-relative-date';
 import Button from 'component/button';
 import Expandable from 'component/expandable';
-import MarkdownPreview from 'component/common/markdown-preview';
+import MarkdownPreview from 'component/markdownPreview';
 import ChannelThumbnail from 'component/channelThumbnail';
 import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
 import Icon from 'component/common/icon';

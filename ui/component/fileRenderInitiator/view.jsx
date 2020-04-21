@@ -45,6 +45,7 @@ export default function FileRenderInitiator(props: Props) {
     renderMode,
     hasCostInfo,
     costInfo,
+    someSpecialProp,
   } = props;
 
   const cost = costInfo && costInfo.cost;
@@ -107,8 +108,10 @@ export default function FileRenderInitiator(props: Props) {
     <div
       onClick={disabled ? undefined : viewFile}
       style={thumbnail && !obscurePreview ? { backgroundImage: `url("${thumbnail}")` } : {}}
-      className={classnames('content__cover', {
+      className={classnames({
+        content__cover: !someSpecialProp,
         'content__cover--disabled': disabled,
+        'content__cover--embedded': someSpecialProp,
         'card__media--nsfw': obscurePreview,
       })}
     >

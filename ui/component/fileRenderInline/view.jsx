@@ -39,7 +39,7 @@ export default function FileRenderInline(props: Props) {
   }, [setPlayTime, claimRewards, triggerAnalyticsView, isReadyToPlay, playTime, uri]);
 
   if (!isPlaying) {
-    return null;
+    // return null;
   }
 
   return isReadyToPlay ? <FileRender uri={uri} /> : <LoadingScreen status={__('Preparing your content')} />;

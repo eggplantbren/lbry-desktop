@@ -10,6 +10,11 @@ import defaultSchema from 'hast-util-sanitize/lib/github.json';
 import { formatedLinks, inlineLinks } from 'util/remark-lbry';
 import { Link } from 'react-router-dom';
 import { formatLbryUrlForWeb } from 'util/url';
+import { parseURI } from 'lbry-redux';
+import FileRender from 'component/fileRender';
+import FileRenderInitiator from 'component/fileRenderInitiator';
+import IframeReact from 'component/IframeReact';
+import Button from 'component/button';
 
 type SimpleTextProps = {
   children?: React.Node,
@@ -32,28 +37,45 @@ const SimpleText = (props: SimpleTextProps) => {
 };
 
 const SimpleLink = (props: SimpleLinkProps) => {
-  const { title, children } = props;
-  let { href } = props;
-  if (IS_WEB && href && href.startsWith('lbry://')) {
-    href = formatLbryUrlForWeb(href);
-    // using Link after formatLbryUrl to handle "/" vs "#/"
-    // for web and desktop scenarios respectively
+  const { title, children, doSetFloatingUri } = props;
+  const { href } = props;
+
+  if (!href.startsWith('lbry://')) {
     return (
-      <Link
-        title={title}
-        to={href}
-        onClick={e => {
-          e.stopPropagation();
-        }}
-      >
+      <a href={href} title={title}>
         {children}
-      </Link>
+      </a>
     );
   }
+
+  const [uri, search] = href.split('?');
+  const urlParams = new URLSearchParams(search);
+  const embed = urlParams.get('embed');
+
+  if (embed) {
+    const { streamName, streamClaimId } = parseURI(uri);
+    const url = `/$/embed/${streamName}/${streamClaimId || ''}`;
+    const src = IS_WEB ? url : window.location.href;
+    return (
+      <div className="content-embedded">
+        <Button button="alt" label={uri} onClick={() => doSetFloatingUri(uri)} />
+      </div>
+    );
+  }
+
+  const webLink = formatLbryUrlForWeb(uri);
+  // using Link after formatLbryUrl to handle "/" vs "#/"
+  // for web and desktop scenarios respectively
   return (
-    <a href={href} title={title}>
+    <Link
+      title={title}
+      to={webLink}
+      onClick={e => {
+        e.stopPropagation();
+      }}
+    >
       {children}
-    </a>
+    </Link>
   );
 };
 
@@ -64,16 +86,23 @@ const schema = { ...defaultSchema };
 schema.protocols.href.push('lbry');
 schema.attributes.a.push('embed');
 
+const REPLACE_REGEX = /(<iframe src=")(.*?(?=))("><\/iframe>)/g;
+
 const MarkdownPreview = (props: MarkdownProps) => {
-  const { content, strip, promptLinks } = props;
+  const { content, strip, promptLinks, doSetFloatingUri } = props;
+
+  const strippedContent = content.replace(REPLACE_REGEX, (x, y, iframeSrc) => {
+    return `${iframeSrc}?embed=true`;
+  });
 
   const remarkOptions: Object = {
     sanitize: schema,
     fragment: React.Fragment,
     remarkReactComponents: {
-      a: promptLinks ? ExternalLink : SimpleLink,
+      a: promptLinks ? ExternalLink : linkProps => <SimpleLink {...linkProps} doSetFloatingUri={doSetFloatingUri} />,
       // Workaraund of remarkOptions.Fragment
       div: React.Fragment,
+      p: 'div',
     },
   };
 
@@ -100,22 +129,18 @@ const MarkdownPreview = (props: MarkdownProps) => {
     );
   }
 
-  return (
-    <div className="markdown-preview">
-      {
-        remark()
-          .use(remarkAttr, remarkAttrOpts)
-          // Remark plugins for lbry urls
-          // Note: The order is important
-          .use(formatedLinks)
-          .use(inlineLinks)
-          // Emojis
-          .use(remarkEmoji)
-          .use(reactRenderer, remarkOptions)
-          .processSync(content).contents
-      }
-    </div>
-  );
+  const val = remark()
+    .use(remarkAttr, remarkAttrOpts)
+    // Remark plugins for lbry urls
+    // Note: The order is important
+    .use(formatedLinks)
+    .use(inlineLinks)
+    // Emojis
+    .use(remarkEmoji)
+    .use(reactRenderer, remarkOptions)
+    .processSync(strippedContent).contents;
+
+  return <div className="markdown-preview">{val}</div>;
 };
 
 export default MarkdownPreview;

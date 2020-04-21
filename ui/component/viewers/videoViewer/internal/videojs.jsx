@@ -123,6 +123,7 @@ export default React.memo(function VideoJs(props: Props) {
       wrapper.setAttribute('data-vjs-player', true);
       const el = document.createElement(isAudio ? 'audio' : 'video');
       el.className = 'video-js';
+      el.muted = true;
       wrapper.appendChild(el);
       containerRef.current.appendChild(wrapper);
 

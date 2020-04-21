@@ -2,7 +2,7 @@
 
 import React from 'react';
 import LoadingScreen from 'component/common/loading-screen';
-import MarkdownPreview from 'component/common/markdown-preview';
+import MarkdownPreview from 'component/markdownPreview';
 import Card from 'component/common/card';
 import CodeViewer from 'component/viewers/codeViewer';
 import * as RENDER_MODES from 'constants/file_render_modes';
